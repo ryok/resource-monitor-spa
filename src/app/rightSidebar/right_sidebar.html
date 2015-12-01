@@ -1,0 +1,74 @@
+<div id="right-sidebar" ng-show="rightSidebar" class="sidebar-open black-orange">
+    <div class="sidebar-container" full-scroll>
+
+        <ul class="nav nav-tabs navs-2">
+            <li ng-class="{active: tab1}">
+        <a ng-click="tab1 = true; tab2 = false; tab3 = false" ng-init="tab1 = true">
+                component
+              </a>
+      </li>
+            <li ng-class="{active: tab2}">
+        <a ng-click="tab2 = true; tab1 = false; tab3 = false">
+                <i class="fa fa-gear"></i>
+              </a>
+      </li>
+        </ul>
+        <div class="tab-content">
+            <div class="tab-pane" ng-class="{active: tab1}">
+                <div class="sidebar-title">
+                    <h3> <i class="fa fa-comments-o"></i> component</h3>
+                    <small><i class="fa fa-tim"></i> .</small>
+                </div>
+                <div>
+                    <div class="sidebar-message">
+                        <a href="#">
+                            <div class="pull-left text-center">
+                                <img alt="image" class="img-circle message-avatar" src="">
+
+                                <div class="m-t-xs">
+                                    <i class="fa fa-star text-warning"></i>
+                                    <i class="fa fa-star text-warning"></i>
+                                </div>
+                            </div>
+                            <div class="media-body">
+                                There are many variations of component available.
+                                <br>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div  class="tab-pane" ng-class="{active: tab2}">
+
+                <div class="sidebar-title">
+                    <h3><i class="fa fa-gears"></i> Settings</h3>
+                    <small><i class="fa fa-tim"></i> </small>
+                </div>
+
+                <div class="setings-item">
+                    <span>
+                        背景色切り替え
+                    </span>
+                    <div class="switch">
+                        <div class="onoffswitch">
+                            <input type="checkbox" name="collapsemenu" class="onoffswitch-checkbox" id="example" ng-click="changeColor()">
+                            <label class="onoffswitch-label" for="example">
+                                <span class="onoffswitch-inner"></span>
+                                <span class="onoffswitch-switch"></span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="sidebar-content">
+                    <h4>Settings</h4>
+                    <div class="small">
+                        config component as you wish.
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</div>

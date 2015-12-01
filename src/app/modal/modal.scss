@@ -1,0 +1,14 @@
+.tr-modal {
+  background-color: $dark-gray;
+  color: $white;
+  .modal-footer {
+    .row {
+      .col-md-2 {
+        text-align: center;
+        .k-primary {
+          min-width: 100px;
+        }
+      }
+    }
+  }
+}
