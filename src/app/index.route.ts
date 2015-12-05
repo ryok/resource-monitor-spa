@@ -31,7 +31,6 @@ module spa5 {
             }
           }
         });
-
       $urlRouterProvider.otherwise('/spa5');
     }
   }

@@ -2,18 +2,23 @@
 <div class="wrapper-content">
   <div class="row tr-panel-wrap">
 
-    <!--cpu, memory-->
-    <div class="col-md-9 tr-connect-panel" ng-controller="BoardController as board">
+    <!--cpu-->
+    <div class="col-md-9 tr-connect-panel" ng-controller="CpuController as cpu">
       <div class="tr-widget">
-        <h3 class="tr-widget-title">債権一覧 <span class="collapse k-icon k-i-arrowhead-n tr-widget-icon"></span></h3>
-        <div kendo-grid id="board" class="tr-widget-content" options="board.boardGridOptions">
+        <h3 class="tr-widget-title">CPU <span class="collapse k-icon k-i-arrowhead-n tr-widget-icon"></span></h3>
+        <div kendo-chart
+        k-legend="{ position: 'bottom' }"
+        k-series-defaults="{ type: 'line' }"
+        k-series="[
+        { field: 'nuclear', name: 'Nuclear electricity' },
+        { field: 'hydro', name: 'Hydro electricity' },
+        { field: 'wind', name: 'Wind electricity' }
+        ]"
+        k-data-source="electricity"
+        style="height: 400px;"
+        id="cpu" class="tr-widget-content">
         </div>
       </div>
-      <!-- 板画面のコンテキストメニュー -->
-      <ul kendo-context-menu k-filter="'#board .k-state-selected'">
-        <li>コピー</li>
-        <li ng-click="board.openAgree()">約定登録</li>
-      </ul>
     </div>
 
     <div class="col-md-3 tr-connect-panel" ng-controller="GridController as grid">
