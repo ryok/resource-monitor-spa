@@ -1,4 +1,4 @@
-module resourceSpa {
+module spa5 {
   'use strict';
 
   export class DbResourceController {
@@ -10,17 +10,15 @@ module resourceSpa {
     /* @ngInject */
     constructor($stateParams, $modalInstance, SweetAlert) {
 
-      this.stateParams = $stateParams;
-
-      //売買種類
+      // 売買種類
       this.dealFNMOptions = {
-        dataTextField: "dealFNM",
-        dataValueField: "dealFCD",
+        dataTextField: 'dealFNM',
+        dataValueField: 'dealFCD',
         dataSource: {
           transport: {
             read: {
-              url: "api/DEAL_F_T.json",
-              dataType: "json"
+              url: 'api/DEAL_F_T.json',
+              dataType: 'json'
             }
           }
         }

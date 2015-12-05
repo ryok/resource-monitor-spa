@@ -1,4 +1,4 @@
-module spa1 {
+module spa5 {
   'use strict';
 
   /** @ngInject */

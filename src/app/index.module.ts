@@ -18,10 +18,10 @@
 // declare var toastr: Toastr;
 // declare var moment: moment.MomentStatic;
 
-module spa1 {
+module spa5 {
   'use strict';
 
-  angular.module('spa1', ['ngResource', 'ui.router', 'ui.bootstrap', 'oitozero.ngSweetAlert', 'cfp.hotkeys', 'kendo.directives'])
+  angular.module('spa5', ['ngResource', 'ui.router', 'ui.bootstrap', 'oitozero.ngSweetAlert', 'cfp.hotkeys', 'kendo.directives'])
     // .constant('malarkey', malarkey)
     // .constant('toastr', toastr)
     // .constant('moment', moment)

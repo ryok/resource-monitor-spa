@@ -1,6 +1,8 @@
 <!-- パネル -->
 <div class="wrapper-content">
   <div class="row tr-panel-wrap">
+
+    <!--cpu, memory-->
     <div class="col-md-9 tr-connect-panel" ng-controller="BoardController as board">
       <div class="tr-widget">
         <h3 class="tr-widget-title">債権一覧 <span class="collapse k-icon k-i-arrowhead-n tr-widget-icon"></span></h3>
@@ -13,48 +15,56 @@
         <li ng-click="board.openAgree()">約定登録</li>
       </ul>
     </div>
+
     <div class="col-md-3 tr-connect-panel" ng-controller="GridController as grid">
       <div class="tr-widget">
         <h3 class="tr-widget-title">残高遷移グラフ <span class="collapse k-icon k-i-arrowhead-n tr-widget-icon"></span></h3>
         <div kendo-chart options="grid.gridGraphOptions" class="tr-graph"></div>
       </div>
     </div>
+
     <div class="col-md-3 tr-connect-panel" ng-controller="GridController as grid">
       <div class="tr-widget">
         <h3 class="tr-widget-title">残高遷移グラフ <span class="collapse k-icon k-i-arrowhead-n tr-widget-icon"></span></h3>
         <div kendo-chart options="grid.gridGraphOptions" class="tr-graph"></div>
       </div>
     </div>
+
     <div class="col-md-3 tr-connect-panel" ng-controller="DurationController as duration">
       <div class="tr-widget">
         <h3 class="tr-widget-title">期間優先(調達) <span class="collapse k-icon k-i-arrowhead-n tr-widget-icon"></span></h3>
         <div kendo-grid class="tr-widget-content" options="duration.durationGridBuyOptions"></div>
       </div>
     </div>
+
     <div class="col-md-3 tr-connect-panel" ng-controller="DurationController as duration">
       <div class="tr-widget">
         <h3 class="tr-widget-title">期間優先(放出) <span class="collapse k-icon k-i-arrowhead-n tr-widget-icon"></span></h3>
         <div kendo-grid class="tr-widget-content" options="duration.durationGridSellOptions"></div>
       </div>
     </div>
+
     <div class="col-md-3 tr-connect-panel" ng-controller="BalanceController as balance">
       <div class="tr-widget">
         <h3 class="tr-widget-title">残高優先(調達) <span class="collapse k-icon k-i-arrowhead-n tr-widget-icon"></span></h3>
         <div kendo-grid class="tr-widget-content" options="balance.balanceGridBuyOptions"></div>
       </div>
     </div>
+
     <div class="col-md-3 tr-connect-panel" ng-controller="BalanceController as balance">
       <div class="tr-widget">
         <h3 class="tr-widget-title">残高優先(放出) <span class="collapse k-icon k-i-arrowhead-n tr-widget-icon"></span></h3>
         <div kendo-grid class="tr-widget-content" options="balance.balanceGridSellOptions"></div>
       </div>
     </div>
+
     <div class="col-md-8 tr-connect-panel" ng-controller="GridController as grid">
       <div class="tr-widget">
         <h3 class="tr-widget-title">グリッド <span class="collapse k-icon k-i-arrowhead-n tr-widget-icon"></span></h3>
         <div kendo-grid class="tr-widget-content" options="grid.gridGridOptions"></div>
       </div>
     </div>
+
     <div class="col-md-4 tr-connect-panel" ng-controller="GridController as grid">
       <div class="tr-widget">
         <h3 class="tr-widget-title">残高遷移グラフ <span class="collapse k-icon k-i-arrowhead-n tr-widget-icon"></span></h3>

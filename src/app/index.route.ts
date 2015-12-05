@@ -1,4 +1,4 @@
-module spa1 {
+module spa5 {
   'use strict';
 
   export class RouterConfig {
@@ -6,7 +6,7 @@ module spa1 {
     constructor($stateProvider: ng.ui.IStateProvider, $urlRouterProvider: ng.ui.IUrlRouterProvider) {
       $stateProvider
         .state('home', {
-          url: '/spa1',
+          url: '/spa5',
           views: {
             'leftSidebar': {
               templateUrl: 'app/leftSidebar/left_sidebar.html'
@@ -32,7 +32,7 @@ module spa1 {
           }
         });
 
-      $urlRouterProvider.otherwise('/spa1');
+      $urlRouterProvider.otherwise('/spa5');
     }
   }
 }
