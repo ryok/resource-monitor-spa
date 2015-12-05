@@ -30,36 +30,6 @@ module spa1 {
               controllerAs: 'rightSidebar'
             }
           }
-        })
-        .state('home.agreements', {
-          url: '/agreements',
-          // regNoにはnullを入れておかないと、以下の$stateParamsで受け取れないためnullを入れておく
-          params: { 'regNo': null },
-          resolve: {
-            // multiStock: () => {
-            //   return {
-            //     multiStock: ($http) => {
-            //       return $http({ method: 'GET', url: 'api/multi_stock.json' });
-            //     }
-            //   }
-            // }
-          },
-          onEnter: ['$stateParams', '$state', '$modal', ($stateParams, $state, $modal) => {
-            $modal.open({
-              animation: true,
-              size: 'lg',
-              controller: 'AgreementController',
-              controllerAs: 'modal',
-              templateUrl: 'app/modal/modal_template.html'
-            }).result.finally(() => {
-              $state.go('^');
-            });
-          }],
-          views: {
-            'modal-body@': {
-              templateUrl: 'app/agreement/agreement.html'
-            }
-          }
         });
 
       $urlRouterProvider.otherwise('/spa1');

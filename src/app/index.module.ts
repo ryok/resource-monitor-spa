@@ -37,7 +37,6 @@ module spa1 {
     .controller('RightSidebarController', RightSidebarController)
     .controller('TitleClockController', TitleClockController)
     .controller('TopNavbarController', TopNavbarController)
-    .directive('iCheck', iCheck)
     .directive('minimalizaSidebar', minimalizaSidebar)
     .directive('titleClock', titleClock);
 }
