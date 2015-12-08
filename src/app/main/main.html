@@ -6,17 +6,7 @@
     <div class="col-md-9 tr-connect-panel" ng-controller="CpuController as cpu">
       <div class="tr-widget">
         <h3 class="tr-widget-title">CPU <span class="collapse k-icon k-i-arrowhead-n tr-widget-icon"></span></h3>
-        <div kendo-chart
-        k-legend="{ position: 'bottom' }"
-        k-series-defaults="{ type: 'line' }"
-        k-series="[
-        { field: 'nuclear', name: 'Nuclear electricity' },
-        { field: 'hydro', name: 'Hydro electricity' },
-        { field: 'wind', name: 'Wind electricity' }
-        ]"
-        k-data-source="electricity"
-        style="height: 400px;"
-        id="cpu" class="tr-widget-content">
+        <div kendo-chart k-data-source="electricity" style="height: 400px;" options="cpu.cpuOptions" class="tr-widget-content">
         </div>
       </div>
     </div>

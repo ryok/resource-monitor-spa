@@ -5,7 +5,7 @@ var spa5;
         function BalanceController($state) {
             this.state = $state;
             this.balanceGridBuyOptions = {
-                selectable: "multiple",
+                selectable: 'multiple',
                 dataSource: {
                     transport: {
                         read: {
@@ -101,7 +101,7 @@ var spa5;
                 ]
             };
             this.balanceGridSellOptions = {
-                selectable: "multiple",
+                selectable: 'multiple',
                 dataSource: {
                     transport: {
                         read: {
@@ -194,9 +194,9 @@ var spa5;
             };
         }
         BalanceController.prototype.onSelect = function (kendDateoEvent) {
-            if ($(kendDateoEvent.item).children(".k-link").text() == "約定登録") {
+            if ($(kendDateoEvent.item).children('.k-link').text() == '約定登録') {
                 this.state.go('.agreements', {
-                    regNo: $(".k-state-selected").children(":first").children().text()
+                    regNo: $('.k-state-selected').children(':first').children().text()
                 });
             }
         };

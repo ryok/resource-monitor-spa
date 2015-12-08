@@ -11,7 +11,7 @@ module spa5 {
       this.state = $state;
 
       this.balanceGridBuyOptions = {
-        selectable: "multiple",
+        selectable: 'multiple',
         dataSource: {
           transport: {
             read: {
@@ -115,7 +115,7 @@ module spa5 {
         ]
       };
       this.balanceGridSellOptions = {
-        selectable: "multiple",
+        selectable: 'multiple',
         dataSource: {
           transport: {
             read: {
@@ -217,9 +217,9 @@ module spa5 {
     }
 
     onSelect(kendDateoEvent) {
-      if ($(kendDateoEvent.item).children(".k-link").text() == "約定登録") {
+      if ($(kendDateoEvent.item).children('.k-link').text() == '約定登録') {
         this.state.go('.agreements', {
-          regNo: $(".k-state-selected").children(":first").children().text()
+          regNo: $('.k-state-selected').children(':first').children().text()
         });
       }
     }
