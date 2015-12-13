@@ -4,7 +4,7 @@ var spa5;
     var CpuController = (function () {
         function CpuController($state) {
             this.state = $state;
-            this.cpuOptions = {
+            this.cpuChartOptions = {
                 title: {
                     text: 'CPU Usage (%)'
                 },
@@ -55,19 +55,40 @@ var spa5;
                     template: '#= series.name #: #= value #'
                 }
             };
-            this.electricity = new kendo.data.DataSource({
-                transport: {
-                    read: {
-                        url: '../content/dataviz/js/spain-electricity.json',
-                        dataType: 'json'
-                    }
-                },
-                sort: {
-                    field: 'year',
-                    dir: 'asc'
-                }
-            });
         }
+        CpuController.prototype.callApi = function (method, params, async, success, error) {
+            var url = 'http://ryok-centos.cloudapp.net/zabbix/api_jsonrpc.php';
+            var sendData = {
+                jsonrpc: '2.0',
+                id: 1,
+                auth: authid,
+                method: method,
+                params: params,
+            };
+            $.ajax({
+                url: url,
+                contentType: 'application/json-rpc',
+                dataType: 'json',
+                type: 'POST',
+                processData: false,
+                data: JSON.stringify(sendData),
+                async: async,
+                success: success,
+                error: error,
+            });
+        };
+        CpuController.prototype.getAPIResponse = function (method, params, async, callback) {
+            callAPI(method, params, async, function (response) {
+                if (response['error']) {
+                    alert("API Error:" + JSON.stringify(response));
+                }
+                else {
+                    callback(response['result']);
+                }
+            }, function (response) {
+                alert("Connect Error:" + JSON.stringify(response));
+            });
+        };
         return CpuController;
     })();
     spa5.CpuController = CpuController;

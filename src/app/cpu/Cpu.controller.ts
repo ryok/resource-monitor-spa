@@ -1,18 +1,15 @@
-/// <reference path=",,/.,/,.jqzabbix/jqzabbix.d.ts" />
-
 module spa5 {
   'use strict';
 
   export class CpuController {
     private state: any;
-    electricity: Object;
-    cpuOptions: Object;
+    cpuChartOptions: Object;
 
     /* @ngInject */
     constructor($state) {
       this.state = $state;
 
-      this.cpuOptions = {
+      this.cpuChartOptions = {
         title: {
               text: 'CPU Usage (%)'
         },
@@ -62,13 +59,13 @@ module spa5 {
             format: '{0}%',
             template: '#= series.name #: #= value #'
         }
-      }
+      };
 
-      // on
-      this.electricity = new kendo.data.DataSource({
+      // data source
+      /*this.cpuDataSource = new kendo.data.DataSource({
         transport: {
           read: {
-            url: '../content/dataviz/js/spain-electricity.json',
+            url: 'api/server_cpu.json',
             dataType: 'json'
           }
         },
@@ -76,7 +73,45 @@ module spa5 {
           field: 'year',
           dir: 'asc'
         }
-      });
+      });*/
+    }
+
+    callApi(method: string, params: string,
+      async: string, success: string, error: string) {
+        var url  = 'http://ryok-centos.cloudapp.net/zabbix/api_jsonrpc.php'; //環境に合わせる
+        var sendData = {
+          jsonrpc: '2.0',
+          id:      1,
+          auth:    authid,
+          method:  method,
+          params:  params,
+        }
+
+        $.ajax({
+          url:          url,
+          contentType: 'application/json-rpc',
+          dataType:    'json',
+          type:        'POST',
+          processData: false,
+          data:        JSON.stringify(sendData),
+          async:       async,
+          success:     success,
+          error:       error,
+        });
+    }
+    getAPIResponse(method: string, params: string, async: string, callback: string){
+      callAPI(method, params, async,
+        function(response){
+          if(response['error']){
+            alert("API Error:" + JSON.stringify(response));
+          }else{
+            callback(response['result']);
+          }
+        },
+        function(response){
+          alert("Connect Error:" + JSON.stringify(response));
+        }
+      );
     }
   }
 }
