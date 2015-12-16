@@ -3,11 +3,15 @@ module spa5 {
 
   export class CpuController {
     private state: any;
-    cpuChartOptions: Object;
+    public cpuChartOptions: Object;
+    public apiHost: string = 'http://ryok-centos.cloudapp.net/zabbix/api_jsonrpc.php';
+    public authId: any;
 
     /* @ngInject */
-    constructor($state) {
+    constructor($state, private $log: angular.ILogService, private $http: angular.IHttpService) {
       this.state = $state;
+      this.authId = this.init();
+      console.log(this.authId);
 
       this.cpuChartOptions = {
         title: {
@@ -75,43 +79,28 @@ module spa5 {
         }
       });*/
     }
-
-    callApi(method: string, params: string,
-      async: string, success: string, error: string) {
-        var url  = 'http://ryok-centos.cloudapp.net/zabbix/api_jsonrpc.php'; //環境に合わせる
-        var sendData = {
-          jsonrpc: '2.0',
-          id:      1,
-          auth:    authid,
-          method:  method,
-          params:  params,
-        }
-
-        $.ajax({
-          url:          url,
-          contentType: 'application/json-rpc',
-          dataType:    'json',
-          type:        'POST',
-          processData: false,
-          data:        JSON.stringify(sendData),
-          async:       async,
-          success:     success,
-          error:       error,
-        });
+    
+    private init(): angular.IPromise<any[]> {
+      var user = 'Admin';
+      var password = 'zabbix';
+      var data = {
+        jsonrpc: '2.0',
+        id:      1,
+        auth:    null,
+        method:  'user.login',
+        params:  {"user":user,"password":password}
+      }
+      this.$http.post(this.apiHost,data)
+      .then((response: any): any => {
+        return response.data;
+      })
+      .catch((error: any): any => {
+        this.$log.error('Failed for init.¥n', error.data);
+      });
     }
-    getAPIResponse(method: string, params: string, async: string, callback: string){
-      callAPI(method, params, async,
-        function(response){
-          if(response['error']){
-            alert("API Error:" + JSON.stringify(response));
-          }else{
-            callback(response['result']);
-          }
-        },
-        function(response){
-          alert("Connect Error:" + JSON.stringify(response));
-        }
-      );
+    
+    public getCpu(){
+      var hosts = [];
     }
   }
 }
