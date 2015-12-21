@@ -5,7 +5,9 @@
 /// <reference path="index.run.ts" />
 
 /// <reference path="balance/Balance.controller.ts" />
-/// <reference path="cpu/Cpu.controller.ts" />
+/// <reference path="auth/authContributor.service.ts" />
+/// <reference path="cpu/cpu.service.ts" />
+/// <reference path="cpu/cpu.controller.ts" />
 /// <reference path="grid/Grid.controller.ts" />
 /// <reference path="duration/Duration.controller.ts" />
 /// <reference path="iCheck/ICheck.controller.ts" />
@@ -18,8 +20,6 @@
 /// <reference path="iCheck/iCheck.directive.ts" />
 /// <reference path="minimalizaSidebar/minimalizaSidebar.directive.ts" />
 /// <reference path="titleClock/titleClock.directive.ts" />
-
-
 
 // declare var malarkey: any;
 // declare var toastr: Toastr;
@@ -37,9 +37,13 @@ module spa5 {
     .config(RouterConfig)
 
     .run(RunBlock)
+    
     // .service('githubContributor', GithubContributor)
     // .service('webDevTec', WebDevTecService)
+    .service('authContributor', AuthContributor)
+    .service('cpuService', CpuService)
     .controller('BalanceController', BalanceController)
+    //.controller('CpuController', ["authContributor", CpuController])
     .controller('CpuController', CpuController)
     .controller('DurationController', DurationController)
     .controller('GridController', GridController)

@@ -1,17 +1,25 @@
+/// <reference path="../auth/authContributor.service.ts" />
+/// <reference path="./cpu.service.ts" />
+
 module spa5 {
   'use strict';
 
   export class CpuController {
     private state: any;
     public cpuChartOptions: Object;
-    public apiHost: string = 'http://ryok-centos.cloudapp.net/zabbix/api_jsonrpc.php';
     public authId: any;
 
     /* @ngInject */
-    constructor($state, private $log: angular.ILogService, private $http: angular.IHttpService) {
+    constructor($state, private $log: angular.ILogService, private cpuService: CpuService) {
+      // console.log('cpu start...');
+      // console.log('apiHost' + this.authContributor.apiHost);
       this.state = $state;
-      this.authId = this.init();
-      console.log(this.authId);
+      /*this.authContributor.login()
+        .then(r => {
+          this.authId = r; 
+          console.log(this.authId.result);
+        });*/
+      this.cpuService.getCpu();
 
       this.cpuChartOptions = {
         title: {
@@ -80,27 +88,24 @@ module spa5 {
       });*/
     }
     
-    private init(): angular.IPromise<any[]> {
-      var user = 'Admin';
-      var password = 'zabbix';
-      var data = {
-        jsonrpc: '2.0',
-        id:      1,
-        auth:    null,
-        method:  'user.login',
-        params:  {"user":user,"password":password}
-      }
-      this.$http.post(this.apiHost,data)
-      .then((response: any): any => {
-        return response.data;
-      })
-      .catch((error: any): any => {
-        this.$log.error('Failed for init.¥n', error.data);
-      });
-    }
-    
-    public getCpu(){
-      var hosts = [];
-    }
+    // private init(): angular.IPromise<any[]> {
+    //   console.log("init start..");
+    //   var user = 'Admin';
+    //   var password = 'zabbix';
+    //   var data = {
+    //     jsonrpc: '2.0',
+    //     id:      1,
+    //     auth:    null,
+    //     method:  'user.login',
+    //     params:  {"user":user,"password":password}
+    //   }
+    //   return this.$http.post(this.apiHost,data)
+    //   .then((response: any): any => {
+    //     return response.data;
+    //   })
+    //   .catch((error: any): any => {
+    //     this.$log.error('Failed for init.¥n', error.data);
+    //   });
+    // }
   }
 }
