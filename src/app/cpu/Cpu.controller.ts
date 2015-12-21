@@ -11,15 +11,11 @@ module spa5 {
 
     /* @ngInject */
     constructor($state, private $log: angular.ILogService, private cpuService: CpuService) {
-      // console.log('cpu start...');
-      // console.log('apiHost' + this.authContributor.apiHost);
+      
       this.state = $state;
-      /*this.authContributor.login()
-        .then(r => {
-          this.authId = r; 
-          console.log(this.authId.result);
-        });*/
-      this.cpuService.getCpu();
+      
+      // get cpu
+      // this.cpuService.getCpu();
 
       this.cpuChartOptions = {
         title: {
