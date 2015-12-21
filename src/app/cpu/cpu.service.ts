@@ -89,7 +89,7 @@ module spa5 {
                               console.log('item.get', itemid);
                               
                               //history get
-                              console.log(parseInt(new Date()));
+                              console.log(parseInt(new Date().toDateString));
                               //var now = parseInt(new Date()/1000);
                               var data = {
                                 jsonrpc: '2.0',
