@@ -37,47 +37,23 @@ module spa5 {
               this.authId = r;
               
               // get hosts info
-              /*var data = {
-                  jsonrpc: '2.0',
-                  id:      1,
-                  auth:    this.authId.result,
-                  method:  'host.get',
-                  params:  {"output":"extend","sortfield":"host"}
-              }
-              console.log('host.get start...');
-              this.$http.post(this.apiHost,data)*/
               this.hostService.getHost(this.authId.result)
                 .then(res => {
-                  var hostInfo = res;
+                  var hostInfo: any = res;
                   console.log('hostInfo',hostInfo.result);
-                  // this.hosts = response.data.result;
-                  // this.hosts = response.data;
-                  // console.log('host.get ', response.result);
-                  this.hostids = new Array(hostInfo.length);
-                  this.hostnames = new Array(hostInfo.length);
-                  for (var i=0;i<hostInfo.length;i++) {
-                      // console.log(response.data.result[i].hostid);
-                      // console.log(response.data.result[i].host);
-                      // this.hostids.push(response.data.result[i].hostid);
-                      // this.hostnames.push(response.data.result[i].host);
-                      this.hostids[i] = hostInfo[i].hostid;
-                      this.hostnames[i] = hostInfo[i].host;
+                  this.hostids = new Array(hostInfo.result.length);
+                  this.hostnames = new Array(hostInfo.result.length);
+                  for (var i=0;i<hostInfo.result.length;i++) {
+                      this.hostids[i] = hostInfo.result[i].hostid;
+                      this.hostnames[i] = hostInfo.result[i].host;
                   }
-                  console.log(this.hostids);
-                  console.log(this.hostnames);
-                  
-                  console.log('getCpu start...');
-                  console.log('hostids', this.hostids);
-                  console.log('hostnames', this.hostnames);
+                  console.log('item.get start...');
                 
                   for(var i=0;i<this.hostids.length;i++) {
-                      var hostid = this.hostids[i];
+                      var hostid: any = this.hostids[i];
                       console.log('hostid', hostid);
-                      console.dir(this.graphs);
                       for(var key in this.graphs) {
-                          var graph = key;
-                          console.log('graph',graph);
-                        
+                          console.log('graphs', this.graphs[key]);
                           var data = {
                               jsonrpc: '2.0',
                               id:      1,
@@ -85,39 +61,54 @@ module spa5 {
                               method:  'item.get',
                               params:  {
                                   "hostids":hostid,
-                                  "filter":graph.filter
+                                  "filter":this.graphs[key].filter
                                   }
                           }
                           this.$http.post(this.apiHost, data)
                           .then((response: any): any => {
-                              var itemid = response.data.result[0].itemid;
-                              console.log('item.get', itemid);
+                              console.log('item.get', response.data);
                               
-                              //history get
-                              //    console.log(parseInt(new Date().toDateString));
-                              //var now = parseInt(new Date()/1000);
-                              var data = {
-                                jsonrpc: '2.0',
-                                id:      1,
-                                auth:    this.authId.result,
-                                method:  'history.get',
-                                params:  {
-                                    "history":graph.type,
-                                    "itemids":itemid,
-                                    "output":"extend",
-                                    "time_from": 86400,
-                                    "time_till": 0,
-                                    "limit":     288
-                                        }
+                              // Objectが存在しないresponse.data.resultが帰ってくる。。なぞ
+                              if (response.data.result[0].itemid !== undefined) {
+                              
+                                var itemid = response.data.result[0].itemid;
+                                console.log('itemid', itemid);
+                                
+                                //history get
+                                console.log('history.get start..');
+                                //    console.log(parseInt(new Date().toDateString));
+                                //var now = parseInt(new Date()/1000);
+                                var now = parseInt(new Date().toDateString());
+                                var timeTill = now;
+                                var timeFrom = now - 86400;
+                                console.log('timeTill', timeTill);
+                                console.log('timeFrom', timeFrom);
+                                var data = {
+                                    jsonrpc: '2.0',
+                                    id:      1,
+                                    auth:    this.authId.result,
+                                    method:  'history.get',
+                                    params:  {
+                                        "history":this.graphs[key].type,
+                                        "itemids":itemid,
+                                        "output":"extend",
+                                        "time_from": timeFrom,
+                                        "time_till": timeTill,
+                                        "limit":     288
+                                            }
+                                }
+                                console.dir(data);
+                                console.log(JSON.stringify(data));
+                                
+                                this.$http.post(this.apiHost, data)
+                                    .then((response: any): any => {
+                                    console.log('history.get',response.data);
+                                    console.log('history.get array',response.data.result);
+                                    })
+                                    .catch((error: any): any => {
+                                    console.log('history.get failed');
+                                    });
                               }
-                              this.$http.post(this.apiHost, data)
-                              .then((response: any): any => {
-                                console.log('history.get',response.data);
-                              })
-                              .catch((error: any): any => {
-                                console.log('history.get failed');
-                              });  
-                              
                           })
                           .catch((error: any): any => {
                               console.log('item.get failed');
