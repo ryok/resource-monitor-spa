@@ -6,6 +6,7 @@
 
 /// <reference path="balance/Balance.controller.ts" />
 /// <reference path="auth/authContributor.service.ts" />
+/// <reference path="host/host.service.ts" />
 /// <reference path="cpu/cpu.service.ts" />
 /// <reference path="cpu/cpu.controller.ts" />
 /// <reference path="grid/Grid.controller.ts" />
@@ -41,6 +42,7 @@ module spa5 {
     // .service('githubContributor', GithubContributor)
     // .service('webDevTec', WebDevTecService)
     .service('authContributor', AuthContributor)
+    .service('hostService', HostService)
     .service('cpuService', CpuService)
     .controller('BalanceController', BalanceController)
     //.controller('CpuController', ["authContributor", CpuController])

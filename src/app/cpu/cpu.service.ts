@@ -1,4 +1,5 @@
 /// <reference path="../auth/authContributor.service.ts" />
+/// <reference path="../host/host.service.ts" />
 
 module spa5 {
     'use strict';
@@ -11,7 +12,7 @@ module spa5 {
         private graphs: Object;
         
         /* @ngInject */
-        constructor(private $log: angular.ILogService, private $http: angular.IHttpService, private authContributor: AuthContributor) {
+        constructor(private $log: angular.ILogService, private $http: angular.IHttpService, private authContributor: AuthContributor, private hostService: HostService) {
             
             console.log('cpu service start...');
             
@@ -27,15 +28,16 @@ module spa5 {
                     filter:{
                         key_:'vm.memory.size[available]'
                     },
-                    type:3}
+                    type:3
+                }
             ];
             
             this.authContributor.login()
             .then(r => {
-              this.authId = r; 
-
+              this.authId = r;
+              
               // get hosts info
-              var data = {
+              /*var data = {
                   jsonrpc: '2.0',
                   id:      1,
                   auth:    this.authId.result,
@@ -43,20 +45,23 @@ module spa5 {
                   params:  {"output":"extend","sortfield":"host"}
               }
               console.log('host.get start...');
-              this.$http.post(this.apiHost,data)
-              .then((response: any): any => {
+              this.$http.post(this.apiHost,data)*/
+              this.hostService.getHost(this.authId.result)
+                .then(res => {
+                  var hostInfo = res;
+                  console.log('hostInfo',hostInfo.result);
                   // this.hosts = response.data.result;
                   // this.hosts = response.data;
-                  // console.log('host.get ', response.data.result);
-                  this.hostids = new Array(response.data.result.length);
-                  this.hostnames = new Array(response.data.result.length);
-                  for (var i=0;i<response.data.result.length;i++) {
+                  // console.log('host.get ', response.result);
+                  this.hostids = new Array(hostInfo.length);
+                  this.hostnames = new Array(hostInfo.length);
+                  for (var i=0;i<hostInfo.length;i++) {
                       // console.log(response.data.result[i].hostid);
                       // console.log(response.data.result[i].host);
                       // this.hostids.push(response.data.result[i].hostid);
                       // this.hostnames.push(response.data.result[i].host);
-                      this.hostids[i] = response.data.result[i].hostid;
-                      this.hostnames[i] = response.data.result[i].host;
+                      this.hostids[i] = hostInfo[i].hostid;
+                      this.hostnames[i] = hostInfo[i].host;
                   }
                   console.log(this.hostids);
                   console.log(this.hostnames);
@@ -89,7 +94,7 @@ module spa5 {
                               console.log('item.get', itemid);
                               
                               //history get
-                              console.log(parseInt(new Date().toDateString));
+                              //    console.log(parseInt(new Date().toDateString));
                               //var now = parseInt(new Date()/1000);
                               var data = {
                                 jsonrpc: '2.0',
@@ -119,11 +124,14 @@ module spa5 {
                           });
                       }
                   }
-                })
-                .catch((error: any): any => {
-                    console.log('host.get failed');
                 });
-              });
+                /*.catch((error: any): any => {
+                    console.log('host.get failed');
+                });*/
+            });
+            /*.catch((error: any): any => {
+                console.log('user.login failed');
+            });*/
         }
     }
 }
