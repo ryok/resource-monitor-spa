@@ -1,5 +1,4 @@
-/// <reference path="../auth/authContributor.service.ts" />
-/// <reference path="../host/host.service.ts" />
+/// <reference path="../zabbixIf/zabbixIfContributor.service.ts" />
 
 module spa5 {
     'use strict';
@@ -12,35 +11,28 @@ module spa5 {
         private graphs: Object;
         
         /* @ngInject */
-        constructor(private $log: angular.ILogService, private $http: angular.IHttpService, private authContributor: AuthContributor, private hostService: HostService) {
-            
+        constructor(private $log: angular.ILogService, private $http: angular.IHttpService, private zabbixIfContributor: ZabbixIfContributor) {
             console.log('cpu service start...');
             
             this.graphs = [
                 {
                     label:'LA5',
                     filter:{
-                        key_:'system.cpu.load[,avg5]'
+                        key_:'system.cpu.load[percpu,avg5]'
                     },
-                    type:0},
-                {
-                    label:'Mem Avail',
-                    filter:{
-                        key_:'vm.memory.size[available]'
-                    },
-                    type:3
-                }
+                    type:0
+                }  
             ];
             
-            this.authContributor.login()
+            this.zabbixIfContributor.login()
             .then(r => {
               this.authId = r;
               
               // get hosts info
-              this.hostService.getHost(this.authId.result)
+              this.zabbixIfContributor.getHost(this.authId.result)
                 .then(res => {
                   var hostInfo: any = res;
-                  console.log('hostInfo',hostInfo.result);
+                  // console.log('hostInfo',hostInfo.result);
                   this.hostids = new Array(hostInfo.result.length);
                   this.hostnames = new Array(hostInfo.result.length);
                   for (var i=0;i<hostInfo.result.length;i++) {
@@ -53,66 +45,35 @@ module spa5 {
                       var hostid: any = this.hostids[i];
                       console.log('hostid', hostid);
                       for(var key in this.graphs) {
-                          console.log('graphs', this.graphs[key]);
-                          var data = {
-                              jsonrpc: '2.0',
-                              id:      1,
-                              auth:    this.authId.result,
-                              method:  'item.get',
-                              params:  {
-                                  "hostids":hostid,
-                                  "filter":this.graphs[key].filter
-                                  }
-                          }
-                          this.$http.post(this.apiHost, data)
-                          .then((response: any): any => {
-                              console.log('item.get', response.data);
-                              
+                          console.log('graphs', this.graphs[key].filter);
+                          
+                          // get item
+                          this.zabbixIfContributor.getItem(this.authId.result,hostid, this.graph[key].filter)
+                          .then(r => {
+                              var item: any = r;
                               // Objectが存在しないresponse.data.resultが帰ってくる。。なぞ
-                              if (response.data.result[0].itemid !== undefined) {
+                              if (item.result[0].itemid !== undefined) {
                               
-                                var itemid = response.data.result[0].itemid;
+                                var itemid = item.result[0].itemid;
                                 console.log('itemid', itemid);
                                 
-                                //history get
+                                // get history
                                 console.log('history.get start..');
-                                //    console.log(parseInt(new Date().toDateString));
-                                //var now = parseInt(new Date()/1000);
-                                var now = parseInt(new Date().toDateString());
+                                var unixtime: number = new Date().getTime() / 1000;
+                                var now = parseInt( unixtime.toString() );
                                 var timeTill = now;
                                 var timeFrom = now - 86400;
-                                console.log('timeTill', timeTill);
-                                console.log('timeFrom', timeFrom);
-                                var data = {
-                                    jsonrpc: '2.0',
-                                    id:      1,
-                                    auth:    this.authId.result,
-                                    method:  'history.get',
-                                    params:  {
-                                        "history":this.graphs[key].type,
-                                        "itemids":itemid,
-                                        "output":"extend",
-                                        "time_from": timeFrom,
-                                        "time_till": timeTill,
-                                        "limit":     288
-                                            }
-                                }
-                                console.dir(data);
-                                console.log(JSON.stringify(data));
                                 
-                                this.$http.post(this.apiHost, data)
-                                    .then((response: any): any => {
-                                    console.log('history.get',response.data);
-                                    console.log('history.get array',response.data.result);
-                                    })
-                                    .catch((error: any): any => {
-                                    console.log('history.get failed');
-                                    });
+                                this.zabbixIfContributor.getHistory(this.authId.result, this.graphs[key].type, itemid, timeFrom, timeTill)
+                                .then(r => {
+                                    var historyData = r;
+                                    console.log('history.get ', historyData);
+                                })
                               }
                           })
-                          .catch((error: any): any => {
+                          /*.catch((error: any): any => {
                               console.log('item.get failed');
-                          });
+                          });*/
                       }
                   }
                 });

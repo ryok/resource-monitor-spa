@@ -1,4 +1,3 @@
-/// <reference path="../auth/authContributor.service.ts" />
 /// <reference path="./cpu.service.ts" />
 
 module spa5 {
