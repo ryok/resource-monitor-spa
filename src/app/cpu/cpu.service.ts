@@ -9,6 +9,7 @@ module spa5 {
         public hostids: Array<any>;
         public hostnames: Array<any>;
         private graphs: Object;
+        private categories: Array<any>;
         
         /* @ngInject */
         constructor(private $log: angular.ILogService, private $http: angular.IHttpService, private zabbixIfContributor: ZabbixIfContributor) {
@@ -32,7 +33,6 @@ module spa5 {
               this.zabbixIfContributor.getHost(this.authId.result)
                 .then(res => {
                   var hostInfo: any = res;
-                  // console.log('hostInfo',hostInfo.result);
                   this.hostids = new Array(hostInfo.result.length);
                   this.hostnames = new Array(hostInfo.result.length);
                   for (var i=0;i<hostInfo.result.length;i++) {
@@ -61,11 +61,16 @@ module spa5 {
                                 console.log('history.get start..');
                                 this.zabbixIfContributor.getHistory(this.authId.result, this.graphs[key].type, itemid)
                                 .then(r => {
-                                    var historyData = r;
+                                    var historyData: any = r;
                                     console.log('history.get ', historyData);
-                                })
+                                    for(var k=0;k<historyData.result.length;k++) {
+                                    //for(var key in historyData.result) {
+                                        this.categories[key] = historyData.result[key].clock;
+                                        console.log('cate',this.categories[key]);
+                                    }
+                                });
                               }
-                          })
+                          });
                           /*.catch((error: any): any => {
                               console.log('item.get failed');
                           });*/
@@ -83,7 +88,7 @@ module spa5 {
         
         public getSeries(): Object {
             console.log('getSeries start...');
-            var series: Object = 
+            /*var series: Object = 
             [
                 {
                     field: 'value',
@@ -93,9 +98,24 @@ module spa5 {
                     field: 'value',
                     name: 'Dummy Host'
                 }
-            ];
+            ];*/
+            var series: Object = 
+            [
+                {
+                    name: 'Zabbix Server',
+                    data: [1, 3, 5, 5, 8, 2]
+                },
+                {
+                    name: 'Demo Server',
+                    data: [6, 3, 2, 2, 3, 9]
+                }
+            ]
             return series;
         }
+        
+        /*public getCategories(): Array<any> {
+            
+        }*/
         
         public getDataSource(): Object {
             console.log('getDataSource start...');
@@ -132,7 +152,7 @@ module spa5 {
                     "value": 3
                 },
                 {
-                    "host": "Zabbix Server",
+                    "host": "Dummy Host",
                     "time": "2000",
                     "value": 6.9
                 },
@@ -147,7 +167,7 @@ module spa5 {
                     "value": 8
                 },
                 {
-                    "host": "Dummy Host",
+                    "host": "Zabbix Server",
                     "time": "2000",
                     "value": 1.9
                 }
