@@ -2,8 +2,10 @@ module spa5 {
   'use strict';
 
   export class ZabbixIfContributor {
-    public apiHost: string = 'http://ryok-centos.cloudapp.net/zabbix/api_jsonrpc.php';
-
+    private apiHost: string = 'http://ryok-centos.cloudapp.net/zabbix/api_jsonrpc.php';
+    private user = 'Admin';
+    private password = 'zabbix';
+    
     /* @ngInject */
     constructor(private $log: angular.ILogService, private $http: angular.IHttpService) {
     }
@@ -12,18 +14,17 @@ module spa5 {
     public login(): angular.IPromise<any[]> {
       console.log('user.login start..');
       
-      // zabbix user/password
-      var user = 'Admin';
-      var password = 'zabbix';
-      
       var data = {
         jsonrpc: '2.0',
         id:      1,
         auth:    null,
         method:  'user.login',
-        params:  {"user":user,"password":password}
-      }
-      return this.$http.post(this.apiHost,data)
+        params:  {
+            'user' : this.user,
+            'password' : this.password
+        }
+      };
+      return this.$http.post(this.apiHost, data)
       .then((response: any): any => {
         return response.data;
       })
@@ -42,10 +43,10 @@ module spa5 {
           auth:    authId,
           method:  'host.get',
           params:  {
-              "output":"extend",
-              "sortfield":"host"
+              'output' : 'extend',
+              'sortfield' : 'host'
             }
-      }
+      };
       return this.$http.post(this.apiHost, data)
       .then((response: any): any => {
         return response.data;
@@ -65,10 +66,10 @@ module spa5 {
             auth:    authId,
             method:  'item.get',
             params:  {
-                "hostids":hostid,
-                "filter":filter
+                'hostids' : hostid,
+                'filter' : filter
                 }
-        }
+        };
         return this.$http.post(this.apiHost, data)
         .then((response: any): any => {
             return response.data;
@@ -79,8 +80,13 @@ module spa5 {
     }
     
     // history get
-    public getHistory(authId: any, type: any, itemId: any, timeFrom: any, timeTill: any): angular.IPromise<any[]>  {
+    public getHistory(authId: any, type: any, itemId: any): angular.IPromise<any[]>  {
         console.log('history.get start..');
+        
+        var unixtime: number = new Date().getTime() / 1000;
+        var now = parseInt( unixtime.toString() );
+        var timeTill = now;
+        var timeFrom = now - 86400;
         
         var data = {
             jsonrpc: '2.0',
@@ -88,14 +94,14 @@ module spa5 {
             auth:    authId,
             method:  'history.get',
             params:  {
-                "history":type,
-                "itemids":itemId,
-                "output":"extend",
-                "time_from": timeFrom,
-                "time_till": timeTill,
-                "limit":     288
+                'history' : type,
+                'itemids' : itemId,
+                'output' : 'extend',
+                'time_from' : timeFrom,
+                'time_till' : timeTill,
+                'limit' :     288
                     }
-        }
+        };
         return this.$http.post(this.apiHost, data)
         .then((response: any): any => {
            return response.data;

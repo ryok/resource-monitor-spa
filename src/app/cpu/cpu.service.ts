@@ -48,7 +48,7 @@ module spa5 {
                           console.log('graphs', this.graphs[key].filter);
                           
                           // get item
-                          this.zabbixIfContributor.getItem(this.authId.result,hostid, this.graph[key].filter)
+                          this.zabbixIfContributor.getItem(this.authId.result,hostid, this.graphs[key].filter)
                           .then(r => {
                               var item: any = r;
                               // Objectが存在しないresponse.data.resultが帰ってくる。。なぞ
@@ -59,12 +59,7 @@ module spa5 {
                                 
                                 // get history
                                 console.log('history.get start..');
-                                var unixtime: number = new Date().getTime() / 1000;
-                                var now = parseInt( unixtime.toString() );
-                                var timeTill = now;
-                                var timeFrom = now - 86400;
-                                
-                                this.zabbixIfContributor.getHistory(this.authId.result, this.graphs[key].type, itemid, timeFrom, timeTill)
+                                this.zabbixIfContributor.getHistory(this.authId.result, this.graphs[key].type, itemid)
                                 .then(r => {
                                     var historyData = r;
                                     console.log('history.get ', historyData);
@@ -84,6 +79,80 @@ module spa5 {
             /*.catch((error: any): any => {
                 console.log('user.login failed');
             });*/
+        }
+        
+        public getSeries(): Object {
+            console.log('getSeries start...');
+            var series: Object = 
+            [
+                {
+                    field: 'value',
+                    name: 'Zabbix Server'
+                },
+                {
+                    field: 'value',
+                    name: 'Dummy Host'
+                }
+            ];
+            return series;
+        }
+        
+        public getDataSource(): Object {
+            console.log('getDataSource start...');
+            var data: Object = 
+            [
+                {
+                    "host": "Zabbix Server",
+                    "time": "1994",
+                    "value": 4.9
+                },
+                {
+                    "host": "Zabbix Server",
+                    "time": "1995",
+                    "value": 4.9
+                },
+                {
+                    "host": "Zabbix Server",
+                    "time": "1996",
+                    "value": 1.9
+                },
+                {
+                    "host": "Zabbix Server",
+                    "time": "1997",
+                    "value": 2.9
+                },
+                {
+                    "host": "Zabbix Server",
+                    "time": "1998",
+                    "value": 4
+                },
+                {
+                    "host": "Zabbix Server",
+                    "time": "1999",
+                    "value": 3
+                },
+                {
+                    "host": "Zabbix Server",
+                    "time": "2000",
+                    "value": 6.9
+                },
+                {
+                    "host": "Dummy Host",
+                    "time": "1998",
+                    "value": 6.9
+                },
+                {
+                    "host": "Dummy Host",
+                    "time": "1999",
+                    "value": 8
+                },
+                {
+                    "host": "Dummy Host",
+                    "time": "2000",
+                    "value": 1.9
+                }
+            ];
+            return data;
         }
     }
 }

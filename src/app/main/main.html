@@ -7,7 +7,7 @@
       <div class="tr-widget">
         <h3 class="tr-widget-title">CPU <span class="collapse k-icon k-i-arrowhead-n tr-widget-icon"></span></h3>
         <!--div kendo-chart k-data-source="electricity" style="height: 400px;" options="cpu.cpuOptions" class="tr-widget-content"-->
-        <div kendo-chart style="height: 400px;" options="cpu.cpuChartOptions" class="tr-widget-content">
+        <div kendo-chart k-series="cpu.cpuSeries" k-data-source="cpu.cpuDataSource" style="height: 400px;" options="cpu.cpuChartOptions" class="tr-widget-content">
         </div>
       </div>
     </div>
