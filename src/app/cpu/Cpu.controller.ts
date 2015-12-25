@@ -51,16 +51,7 @@ module spa5 {
         }
       };
       
-      this.cpuCategoryAxis = {
-          field: "time",
-            categories: [2002, 2003, 2004, 2005, 2006, 2007],
-            majorGridLines: {
-                visible: false
-            },
-            labels: {
-                rotation: 'auto'
-            }
-      }
+      this.cpuCategoryAxis = this.cpuService.getCategories();
       
       /*this.cpuChartOptions = {
         title: {

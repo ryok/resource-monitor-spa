@@ -10,6 +10,8 @@ module spa5 {
         public hostnames: Array<any>;
         private graphs: Object;
         private categories: Array<any>;
+        private data1: Array<int>;
+        private data2: Array<any>;
         
         /* @ngInject */
         constructor(private $log: angular.ILogService, private $http: angular.IHttpService, private zabbixIfContributor: ZabbixIfContributor) {
@@ -63,11 +65,16 @@ module spa5 {
                                 .then(r => {
                                     var historyData: any = r;
                                     console.log('history.get ', historyData);
+                                    this.categories = new Array(historyData.result.length);
+                                    this.data1 = new Array(historyData.result.length);
+                                    this.data2 = new Array(historyData.result.length);
                                     for(var k=0;k<historyData.result.length;k++) {
                                     //for(var key in historyData.result) {
-                                        this.categories[key] = historyData.result[key].clock;
-                                        console.log('cate',this.categories[key]);
+                                        this.categories[k] = historyData.result[k].clock;
+                                        this.data1[k] = historyData.result[k].value;
+                                        this.data2[k] = historyData.result[k].value;
                                     }
+                                    console.log('data1', this.data1);
                                 });
                               }
                           });
@@ -103,21 +110,30 @@ module spa5 {
             [
                 {
                     name: 'Zabbix Server',
-                    data: [1, 3, 5, 5, 8, 2]
+                    data: this.data1
                 },
                 {
                     name: 'Demo Server',
-                    data: [6, 3, 2, 2, 3, 9]
+                    data: this.data2
                 }
             ]
             return series;
         }
         
-        /*public getCategories(): Array<any> {
-            
-        }*/
+        public getCategories(): Object {
+            var cpuCategoryAxis: Object = {
+                categories: this.categories,
+                majorGridLines: {
+                    visible: false
+                },
+                labels: {
+                    rotation: 'auto'
+                }
+            }
+            return cpuCategoryAxis;
+        }
         
-        public getDataSource(): Object {
+        /*public getDataSource(): Object {
             console.log('getDataSource start...');
             var data: Object = 
             [
@@ -173,6 +189,6 @@ module spa5 {
                 }
             ];
             return data;
-        }
+        }*/
     }
 }
