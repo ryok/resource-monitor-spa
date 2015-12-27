@@ -18,10 +18,20 @@ module spa5 {
       // get cpu
       // this.cpuService.getCpu();
       
-      this.cpuSeries = this.cpuService.getSeries();
-      // this.cpuDataSource = this.cpuService.getDataSource();
+      this.cpuSeries = 
+      [
+        {
+          name: 'Zabbix Server',
+          data: this.cpuService.data1
+        },
+        {
+          name: 'Demo Server',
+          data: this.cpuService.data2
+        }
+        ];
       
-      this.cpuChartOptions = {
+      this.cpuChartOptions = cpuService.getChartOptions();
+      /*{
         title: {
               text: 'CPU Usage (%)'
         },
@@ -51,7 +61,15 @@ module spa5 {
         }
       };
       
-      this.cpuCategoryAxis = this.cpuService.getCategories();
+      this.cpuCategoryAxis = {
+          categories: this.cpuService.categories,
+          majorGridLines: {
+              visible: false
+            },
+            labels: {
+                rotation: 'auto'
+            }
+        };*/
       
       /*this.cpuChartOptions = {
         title: {
