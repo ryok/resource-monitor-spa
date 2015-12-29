@@ -82,7 +82,48 @@ module spa5 {
                       this.seriesArray[i].data[k] = historyData.result[k].value;
                     }
                     // console.log('data1', this.data1);
-                    return this.setOptionParams();
+                    
+                    /*var chartOption: Object = {
+                      title: {
+                        text: 'CPU Usage (%)'
+                      },
+                      legend: {
+                        position: 'bottom'
+                      },
+                      chartArea: {
+                        background: ''
+                      },
+                      seriesDefaults: {
+                        type: 'line',
+                        style: 'smooth'
+                      },
+                      series: this.seriesArray,
+                      valueAxis: {
+                        labels: {
+                          format: '{0}%'
+                        },
+                        line: {
+                          visible: false
+                        },
+                        axisCrossingValue: -10
+                      },
+                      categoryAxis: {
+                        categories: this.categories,
+                        majorGridLines: {
+                          visible: false
+                        },
+                        labels: {
+                          rotation: "auto"
+                        }
+                      },
+                      tooltip: {
+                        visible: true,
+                        format: '{0}%',
+                        template: '#= series.name #: #= value #'
+                      }
+                    };
+                    console.log('option', chartOption);
+                    return chartOption;*/
                   });
                 }
               });
@@ -90,6 +131,7 @@ module spa5 {
                 console.log('item.get failed');
               });*/
             }
+            return this.setOptionParams();
           }
         });
         /*.catch((error: any): any => {
