@@ -18,7 +18,7 @@ module spa5 {
       // get cpu
       // this.cpuService.getCpu();
       
-      this.cpuSeries = 
+      /*this.cpuSeries = 
       [
         {
           name: 'Zabbix Server',
@@ -28,9 +28,10 @@ module spa5 {
           name: 'Demo Server',
           data: this.cpuService.data2
         }
-        ];
+        ];*/
       
       this.cpuChartOptions = cpuService.getChartOptions();
+      //this.cpuChartOptions = cpuService.getSeries();
       /*{
         title: {
               text: 'CPU Usage (%)'
