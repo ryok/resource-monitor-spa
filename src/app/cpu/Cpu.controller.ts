@@ -3,127 +3,148 @@
 module spa5 {
   'use strict';
 
+  class Series {
+    public name: any;
+    public data: number[];
+  }
+
   export class CpuController {
     private state: any;
     public cpuChartOptions: Object;
-    private cpuSeries: Object;
-    private cpuDataSource: Object;
-    private cpuCategoryAxis: Object;
+    private cpuSeries: Series[] = [];
+    public cpuCategoryAxis: Object;
+    public seriesArray: Series[] = [];
+    public categories: number[] = [];
+    public cpuDataSource: any;
 
     /* @ngInject */
     constructor($state, private $log: angular.ILogService, private cpuService: CpuService) {
       
       this.state = $state;
       
-      // get cpu
-      // this.cpuService.getCpu();
-      
-      /*this.cpuSeries = 
-      [
-        {
-          name: 'Zabbix Server',
-          data: this.cpuService.data1
-        },
-        {
-          name: 'Demo Server',
-          data: this.cpuService.data2
-        }
-        ];*/
-      
-      this.cpuChartOptions = cpuService.getChartOptions();
-      //this.cpuChartOptions = cpuService.getSeries();
-      /*{
+      /*this.cpuChartOptions = {
         title: {
-              text: 'CPU Usage (%)'
+          text: 'CPU Usage (%)'
         },
         legend: {
-            position: 'bottom'
+          position: 'bottom'
         },
         chartArea: {
-            background: ''
+          background: ''
         },
         seriesDefaults: {
-            type: 'line',
-            style: 'smooth'
+          type: 'line',
+          style: 'smooth'
         },
         valueAxis: {
-            labels: {
-                format: '{0}%'
-            },
-            line: {
-                visible: false
-            },
-            axisCrossingValue: -10
+          labels: {
+            format: '{0}%'
+          },
+          line: {
+            visible: false
+          },
+          axisCrossingValue: -10
         },
         tooltip: {
-            visible: true,
-            format: '{0}%',
-            template: '#= series.name #: #= value #'
+          visible: true,
+          format: '{0}%',
+          template: '#= series.name #: #= value #'
         }
-      };
+      };*/
       
-      this.cpuCategoryAxis = {
-          categories: this.cpuService.categories,
-          majorGridLines: {
+      cpuService.getCpuData()
+      .then((res: any) => {
+        var cpuHistoryDatas = res;
+        console.log('cpuHistoryDatas', cpuHistoryDatas);
+        for (var key in cpuHistoryDatas) {
+          this.seriesArray.push({
+            name: cpuHistoryDatas[key].name,
+            data: cpuHistoryDatas[key].data
+          });
+          /*this.cpuSeries.push({
+            name: cpuHistoryDatas[key].name,
+            data: cpuHistoryDatas[key].data
+          });*/
+          this.categories = cpuHistoryDatas[key].categories;
+        }
+        this.cpuChartOptions = {
+          title: {
+            text: 'CPU Usage (%)'
+          },
+          legend: {
+            position: 'bottom'
+          },
+          chartArea: {
+            background: ''
+          },
+          seriesDefaults: {
+            type: 'line',
+            style: 'smooth'
+          },
+          series: this.seriesArray,
+          valueAxis: {
+            labels: {
+              format: '{0}%'
+            },
+            line: {
+              visible: false
+            },
+            axisCrossingValue: -10
+          },
+          categoryAxis: {
+            categories: this.categories,
+            majorGridLines: {
               visible: false
             },
             labels: {
-                rotation: 'auto'
+              rotation: "auto"
             }
-        };*/
-      
-      /*this.cpuChartOptions = {
-        title: {
-              text: 'CPU Usage (%)'
-        },
-        legend: {
-            position: 'bottom'
-        },
-        chartArea: {
-            background: ''
-        },
-        seriesDefaults: {
-            type: 'line',
-            style: 'smooth'
-        },
-        valueAxis: {
-            labels: {
-                format: '{0}%'
-            },
-            line: {
-                visible: false
-            },
-            axisCrossingValue: -10
-        },
-        categoryAxis: {
-            field: "time",
-            categories: [2002, 2003, 2004, 2005, 2006, 2007],
-            majorGridLines: {
-                visible: false
-            },
-            labels: {
-                rotation: 'auto'
-            }
-        },
-        tooltip: {
+          },
+          tooltip: {
             visible: true,
             format: '{0}%',
             template: '#= series.name #: #= value #'
+          }
+        };
+      });
+      
+      // this.cpuSeries = cpuService.seriesArray;
+      /*this.cpuSeries = this.seriesArray;*/
+      /*this.cpuCategoryAxis = {
+        categories: this.categories,
+        majorGridLines: {
+          visible: false
+        },
+        labels: {
+          rotation: 'auto'
         }
       };*/
-
-      // data source
-      /*this.cpuDataSource = new kendo.data.DataSource({
-        transport: {
-          read: {
-            url: 'api/server_cpu.json',
-            dataType: 'json'
-          }
+      
+      /*this.cpuSeries = [
+        {
+          name: 'Zabbix Server1',
+          data: [99, 89, 12]
         },
-        sort: {
-          field: 'year',
-          dir: 'asc'
+        {
+          name: 'Demo Server',
+          data: [34,45,11]
         }
+      ];
+      this.cpuSeries.push({
+        name: 'A Server',
+        data: [78,3,239]
+      });*/
+      /*this.cpuCategoryAxis = {
+        categories: [2000, 2001, 2002],
+        majorGridLines: {
+          visible: false
+        },
+        labels: {
+          rotation: 'auto'
+        }
+      };
+      this.cpuDataSource = new kendo.data.DataSource({
+        data: [78,3,239]
       });*/
     }
   }

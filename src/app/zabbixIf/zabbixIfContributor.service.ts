@@ -99,7 +99,7 @@ module spa5 {
                 'output' : 'extend',
                 'time_from' : timeFrom,
                 'time_till' : timeTill,
-                'limit' :     288
+                'limit' :     15
                     }
         };
         return this.$http.post(this.apiHost, data)
